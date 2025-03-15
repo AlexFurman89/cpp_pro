@@ -67,11 +67,23 @@ int MainWindow::findLongestCollatz(int maxNumber, int numThreads) {
     int bestNumber = 1, maxLength = 0;
     QVector<QFuture<std::pair<int, int>>> futures;
 
-    for (int i = 1; i <= maxNumber; i++) {
-        if (!running) return -1;
-        futures.append(QtConcurrent::run([this, i]() {
-            int len = collatzLength(i);
-            return std::make_pair(i, len);
+    int chunkSize = maxNumber / numThreads;
+
+    for (int t = 0; t < numThreads; ++t) {
+        int start = t * chunkSize + 1;
+        int end = (t == numThreads - 1) ? maxNumber : start + chunkSize;
+
+        futures.append(QtConcurrent::run([this, start, end]() {
+            int localBest = 1, localMaxLength = 0;
+            for (int i = start; i <= end; i++) {
+                if (!running) return std::make_pair(-1, -1);
+                int len = collatzLength(i);
+                if (len > localMaxLength) {
+                    localBest = i;
+                    localMaxLength = len;
+                }
+            }
+            return std::make_pair(localBest, localMaxLength);
         }));
     }
 
