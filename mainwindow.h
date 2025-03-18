@@ -2,9 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QThread>
 #include <QFuture>
-#include <QtConcurrent/QtConcurrent>
+#include <QtConcurrent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +25,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     bool running;
+    QFuture<void> future;
     void startCalculation(int maxNumber, int numThreads);
     void stopCalculation();
     int collatzLength(long long n);

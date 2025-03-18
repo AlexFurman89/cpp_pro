@@ -2,10 +2,19 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <chrono>
+#include <QtConcurrent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), running(false) {
     ui->setupUi(this);
+
+
+    int maxThreads = QThread::idealThreadCount();
+
+
+    ui->threadSlider->setMinimum(1);
+    ui->threadSlider->setMaximum(maxThreads);
+    ui->threadSlider->setValue(maxThreads);
 
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::onStartClicked);
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::onStopClicked);
@@ -25,7 +34,9 @@ void MainWindow::onStartClicked() {
     ui->stopButton->setEnabled(true);
     ui->resultText->clear();
 
-    startCalculation(maxNumber, numThreads);
+    future = QtConcurrent::run([this, maxNumber, numThreads]() {
+        startCalculation(maxNumber, numThreads);
+    });
 }
 
 void MainWindow::onStopClicked() {
@@ -42,9 +53,13 @@ void MainWindow::startCalculation(int maxNumber, int numThreads) {
     long long duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
     if (result != -1)
-        onCalculationFinished(result, collatzLength(result), duration);
+        QMetaObject::invokeMethod(this, "onCalculationFinished", Qt::QueuedConnection,
+                                  Q_ARG(int, result),
+                                  Q_ARG(int, collatzLength(result)),
+                                  Q_ARG(long long, duration));
     else
-        onErrorMessage("Calculation was stopped.");
+        QMetaObject::invokeMethod(this, "onErrorMessage", Qt::QueuedConnection,
+                                  Q_ARG(QString, "Calculation was stopped."));
 }
 
 void MainWindow::stopCalculation() {

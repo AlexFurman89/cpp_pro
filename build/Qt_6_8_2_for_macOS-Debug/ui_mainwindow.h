@@ -53,7 +53,7 @@ public:
         limitSpinBox = new QSpinBox(centralwidget);
         limitSpinBox->setObjectName("limitSpinBox");
         limitSpinBox->setMinimum(1);
-        limitSpinBox->setMaximum(1000000);
+        limitSpinBox->setMaximum(100000000);
         limitSpinBox->setValue(100000);
 
         verticalLayout->addWidget(limitSpinBox);

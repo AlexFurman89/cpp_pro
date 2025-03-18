@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = /Library/Developer/CommandLineTools/usr/bin/clang
 CXX           = /Library/Developer/CommandLineTools/usr/bin/clang++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=12 -Wall -Wextra $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=12 -Wall -Wextra $(DEFINES)
-INCPATH       = -I../../../test_collatz -I. -I../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers -I../../../Qt/6.8.2/macos/lib/QtGui.framework/Headers -I../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I../../../Qt/6.8.2/macos/mkspecs/macx-clang -F/Users/oleksiifurman/Qt/6.8.2/macos/lib
+INCPATH       = -I../../../test_collatz -I. -I../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers -I../../../Qt/6.8.2/macos/lib/QtGui.framework/Headers -I../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers -I../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I../../../Qt/6.8.2/macos/mkspecs/macx-clang -F/Users/oleksiifurman/Qt/6.8.2/macos/lib
 QMAKE         = /Users/oleksiifurman/Qt/6.8.2/macos/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = test_collatz1.0.0
 DISTDIR = /Users/oleksiifurman/test_collatz/build/Qt_6_8_2_for_macOS-Debug/.tmp/test_collatz1.0.0
 LINK          = /Library/Developer/CommandLineTools/usr/bin/clang++
 LFLAGS        = -stdlib=libc++ -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=12 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Users/oleksiifurman/Qt/6.8.2/macos/lib
-LIBS          = $(SUBLIBS) -F/Users/oleksiifurman/Qt/6.8.2/macos/lib -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework IOKit -framework DiskArbitration -framework UniformTypeIdentifiers -framework AGL -framework OpenGL   
+LIBS          = $(SUBLIBS) -F/Users/oleksiifurman/Qt/6.8.2/macos/lib -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtConcurrent -framework QtCore -framework IOKit -framework DiskArbitration -framework UniformTypeIdentifiers -framework AGL -framework OpenGL   
 AR            = /Library/Developer/CommandLineTools/usr/bin/ar cq
 RANLIB        = /Library/Developer/CommandLineTools/usr/bin/ranlib -s
 SED           = sed
@@ -812,6 +812,7 @@ Makefile: ../../test_collatz.pro ../../../Qt/6.8.2/macos/mkspecs/features/spec_p
 		../../test_collatz.pro \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Resources/QtWidgets.prl \
 		../../../Qt/6.8.2/macos/lib/QtGui.framework/Resources/QtGui.prl \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Resources/QtConcurrent.prl \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Resources/QtCore.prl
 	$(QMAKE) -o Makefile ../../test_collatz.pro -spec macx-clang CONFIG+=debug CONFIG+=qml_debug
 ../../../Qt/6.8.2/macos/mkspecs/features/spec_pre.prf:
@@ -1180,6 +1181,7 @@ Makefile: ../../test_collatz.pro ../../../Qt/6.8.2/macos/mkspecs/features/spec_p
 ../../test_collatz.pro:
 ../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Resources/QtWidgets.prl:
 ../../../Qt/6.8.2/macos/lib/QtGui.framework/Resources/QtGui.prl:
+../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Resources/QtConcurrent.prl:
 ../../../Qt/6.8.2/macos/lib/QtCore.framework/Resources/QtCore.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../../test_collatz.pro -spec macx-clang CONFIG+=debug CONFIG+=qml_debug
@@ -1242,12 +1244,27 @@ compiler_moc_header_clean:
 moc_mainwindow.cpp: ../../mainwindow.h \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/QThread \
-		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/qthread.h \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/QFuture \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/qfuture.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/QtConcurrent \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtaskbuilder.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentcompilertest.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfilter.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfilterkernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfunctionwrappers.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentiteratekernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmap.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmapkernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmedian.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentreducekernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentrun.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentrunbase.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentstoredfunctioncall.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrenttask.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentthreadengine.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentversion.h \
 		../../../Qt/6.8.2/macos/libexec/moc
-	/Users/oleksiifurman/Qt/6.8.2/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=16 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/oleksiifurman/Qt/6.8.2/macos/mkspecs/macx-clang -I/Users/oleksiifurman/test_collatz -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtWidgets.framework/Headers -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtGui.framework/Headers -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/oleksiifurman/Qt/6.8.2/macos/lib ../../mainwindow.h -o moc_mainwindow.cpp
+	/Users/oleksiifurman/Qt/6.8.2/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=16 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/oleksiifurman/Qt/6.8.2/macos/mkspecs/macx-clang -I/Users/oleksiifurman/test_collatz -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtWidgets.framework/Headers -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtGui.framework/Headers -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers -I/Users/oleksiifurman/Qt/6.8.2/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/oleksiifurman/Qt/6.8.2/macos/lib ../../mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1275,10 +1292,25 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 main.o: ../../main.cpp ../../mainwindow.h \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/QThread \
-		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/qthread.h \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/QFuture \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/qfuture.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/QtConcurrent \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtaskbuilder.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentcompilertest.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfilter.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfilterkernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfunctionwrappers.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentiteratekernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmap.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmapkernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmedian.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentreducekernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentrun.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentrunbase.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentstoredfunctioncall.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrenttask.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentthreadengine.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentversion.h \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
@@ -1286,10 +1318,25 @@ main.o: ../../main.cpp ../../mainwindow.h \
 mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/QThread \
-		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/qthread.h \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/QFuture \
 		../../../Qt/6.8.2/macos/lib/QtCore.framework/Headers/qfuture.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/QtConcurrent \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtaskbuilder.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentcompilertest.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfilter.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfilterkernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentfunctionwrappers.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentiteratekernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmap.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmapkernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentmedian.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentreducekernel.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentrun.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentrunbase.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentstoredfunctioncall.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrenttask.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentthreadengine.h \
+		../../../Qt/6.8.2/macos/lib/QtConcurrent.framework/Headers/qtconcurrentversion.h \
 		ui_mainwindow.h \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/QMessageBox \
 		../../../Qt/6.8.2/macos/lib/QtWidgets.framework/Headers/qmessagebox.h
